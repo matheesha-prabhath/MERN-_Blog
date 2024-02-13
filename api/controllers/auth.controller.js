@@ -17,8 +17,13 @@ export const signup = async (req, res, next) => {
     password: hashedPassword,
   });
   try {
+    if (await User.findOne({ email })) {
+      return res.status(400).json({ message: "Email already exists" });
+    } else if (await User.findOne({ username })) {
+      return res.status(400).json({ message: "Username already exists" });
+    }
     await newUser.save();
-    res.status(201).json({ message: "SignUp Successful" });
+    return res.status(201).json({ message: "SignUp Successful" });
   } catch (error) {
     next(error);
   }
