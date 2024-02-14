@@ -26,11 +26,11 @@ export default function SignUp() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      if (data.message === "Email already exists") {
-        setErrorMessage("Email already exists");
-      } else if (data.message === "Username already exists") {
-        setErrorMessage("Username already exists");
+      if (data.success === false) {
+        setLoading(false);
+        return setErrorMessage(data.message);
       }
+      
       setLoading(false);
       if (res.ok) {
         navigate("/signin");
