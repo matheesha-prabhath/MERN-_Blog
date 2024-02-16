@@ -10,7 +10,7 @@ export const signup = async (req, res, next) => {
     return next(errorHandler(400, "All fields are required"));
   }
 
-  const hashedPassword = bcryptjs.hashSync(password, 12);
+  const hashedPassword = bcryptjs.hashSync(password, 10);
 
   const newUser = new User({
     username,
@@ -51,7 +51,7 @@ export const signin = async (req, res, next) => {
 
     return res
       .status(200)
-      .cookie("token", token, {
+      .cookie("access_token", token, {
         httpOnly: true,
       })
       .json(rest);
@@ -75,7 +75,7 @@ export const google = async (req, res, next) => {
         .json(rest);
     } else {
       const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
-      const hashedPassword = bcryptjs.hashSync(generatedPassword, 12);
+      const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
       const newUser = new User({
         username: name.toLowerCase().split(" ").join("") + Math.random().toString(9).slice(-4),
         email,
